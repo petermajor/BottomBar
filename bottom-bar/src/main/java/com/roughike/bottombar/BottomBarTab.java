@@ -78,6 +78,13 @@ public class BottomBarTab extends LinearLayout {
         sixteenDps = MiscUtils.dpToPixel(context, 16);
     }
 
+    public BottomBarTab(Context context, String title, int iconResId) {
+        this(context);
+
+        setTitle(title);
+        setIconResId(iconResId);
+    }
+
     void setConfig(Config config) {
         setInActiveAlpha(config.inActiveTabAlpha);
         setActiveAlpha(config.activeTabAlpha);

@@ -107,7 +107,9 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     public BottomBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
-        setItems(tabXmlResource);
+        if (tabXmlResource != 0) {
+            setItems(tabXmlResource);
+        }
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -239,6 +241,28 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         updateItems(parser.getTabs());
     }
 
+    public void setItems(List<BottomBarTab> bottomBarItems) {
+        setItems(bottomBarItems, null);
+    }
+
+    public void setItems(List<BottomBarTab> bottomBarItems, BottomBarTab.Config defaultTabConfig) {
+        if (bottomBarItems == null || bottomBarItems.size() == 0) {
+            throw new RuntimeException("No items specified for the BottomBar!");
+        }
+
+        if (defaultTabConfig == null) {
+            defaultTabConfig = getTabConfig();
+        }
+
+        int index = 0;
+        for (BottomBarTab bottomBarTab : bottomBarItems) {
+            bottomBarTab.setConfig(defaultTabConfig);
+            bottomBarTab.setIndexInContainer(index++);
+        }
+
+        updateItems(bottomBarItems);
+    }
+
     private BottomBarTab.Config getTabConfig() {
         return new BottomBarTab.Config.Builder()
                 .inActiveTabAlpha(inActiveTabAlpha)
@@ -340,7 +364,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         onTabSelectListener = listener;
 
         if (onTabSelectListener != null && getTabCount() > 0) {
-            listener.onTabSelected(getCurrentTabId());
+            listener.onTabSelected(getCurrentTabPosition());
         }
     }
 
@@ -710,14 +734,12 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     }
 
     private void updateSelectedTab(int newPosition) {
-        int newTabId = getTabAtPosition(newPosition).getId();
-
         if (newPosition != currentTabPosition) {
             if (onTabSelectListener != null) {
-                onTabSelectListener.onTabSelected(newTabId);
+                onTabSelectListener.onTabSelected(newPosition);
             }
         } else if (onTabReselectListener != null && !ignoreTabReselectionListener) {
-            onTabReselectListener.onTabReSelected(newTabId);
+            onTabReselectListener.onTabReSelected(newPosition);
         }
 
         currentTabPosition = newPosition;

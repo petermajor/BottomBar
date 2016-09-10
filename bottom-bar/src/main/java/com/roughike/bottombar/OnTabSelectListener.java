@@ -26,7 +26,7 @@ public interface OnTabSelectListener {
      * also after a configuration change, such as when screen orientation changes
      * from portrait to landscape.
      *
-     * @param tabId the new visible {@link BottomBarTab}
+     * @param position the new visible {@link BottomBarTab}
      */
-    void onTabSelected(@IdRes int tabId);
+    void onTabSelected( int position);
 }

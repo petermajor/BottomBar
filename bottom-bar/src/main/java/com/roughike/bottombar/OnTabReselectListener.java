@@ -24,7 +24,7 @@ public interface OnTabReselectListener {
      * reselected. Use this method for scrolling to the top of your content,
      * as recommended by the Material Design spec
      *
-     * @param tabId the {@link BottomBarTab} that was reselected.
+     * @param position the {@link BottomBarTab} that was reselected.
      */
-    void onTabReSelected(@IdRes int tabId);
+    void onTabReSelected(int position);
 }
