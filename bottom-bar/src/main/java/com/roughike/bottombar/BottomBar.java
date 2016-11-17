@@ -735,14 +735,15 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
 
     private void updateSelectedTab(int newPosition) {
         if (newPosition != currentTabPosition) {
+
+            currentTabPosition = newPosition;
+
             if (onTabSelectListener != null) {
                 onTabSelectListener.onTabSelected(newPosition);
             }
         } else if (onTabReselectListener != null && !ignoreTabReselectionListener) {
             onTabReselectListener.onTabReSelected(newPosition);
         }
-
-        currentTabPosition = newPosition;
 
         if (ignoreTabReselectionListener) {
             ignoreTabReselectionListener = false;
